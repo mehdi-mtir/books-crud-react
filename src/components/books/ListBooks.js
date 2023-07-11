@@ -1,10 +1,15 @@
 
 import { Link } from "react-router-dom";
-
-
+import { useContext } from "react";
+import { BookContext } from '../../App';
 
 function ListBook(props){
+  const{books, setBooks} = useContext(BookContext);
 
+  const deleteBook = (isbn)=>{
+    if(window.confirm('Êtes-vous sûre de vouloir supprimer le livre?'))
+      setBooks(books.filter(b=>b.isbn!==isbn));
+  }
 
   return (
     <div className="row">
@@ -22,12 +27,12 @@ function ListBook(props){
     </thead>
     <tbody>
       {
-        props.books.map(book=><tr key={book.isbn}>
+        books.map(book=><tr key={book.isbn}>
           <th scope="row">{book.isbn}</th>
           <td>{book.titre}</td>
           <td>{book.auteur}</td>
           <td><Link className="btn btn-primary" to={`/books/update/${book.isbn}`} >Editer</Link></td>
-          <td><button className="btn btn-danger" onClick={()=>{props.refDeleteBook(book.isbn)}}>Supprimer</button></td>
+          <td><button className="btn btn-danger" onClick={()=>{deleteBook(book.isbn)}}>Supprimer</button></td>
         </tr>)
       }
 

@@ -1,18 +1,35 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Book from '../../model/Book';
+import { useContext } from "react";
+import { BookContext } from '../../App';
 
 function UpdateBook(props){
+  const{books, setBooks} = useContext(BookContext);
+
   const [book, setBook] = useState(new Book('', '', ''));
   const {isbn} = useParams();
   const navigate = useNavigate();
+
+  const editBook = (book)=>{
+    setBooks(books.map(
+      b=>{
+        if(b.isbn === book.isbn){
+          return book;
+        }
+        else{
+          return b;
+        }
+      }
+    ));
+  }
 
 
   useEffect(
     ()=>{
       async function getBook(){
         console.log('use effect callback execute');
-        const bookToEdit = await props.books.find(b=>b.isbn === isbn);
+        const bookToEdit = await books.find(b=>b.isbn === isbn);
         if (bookToEdit)
           setBook(bookToEdit);
       }
@@ -40,7 +57,7 @@ function UpdateBook(props){
           <input type="text" className="form-control" id="auteur" name="auteur" value={book.auteur} onChange={inputHandler} />
         </div>
         <button type="button" className="btn btn-primary" onClick={()=>{
-          props.refEditBook(book);
+          editBook(book);
           navigate('/books');
         }
         }>Valider</button>

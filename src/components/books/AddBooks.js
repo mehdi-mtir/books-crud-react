@@ -1,14 +1,22 @@
 import { useState } from "react";
 import Book from "../../model/Book";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { BookContext } from '../../App';
 
 function AddBook(props){
+  const{books, setBooks} = useContext(BookContext);
+
   const [book, setBook] = useState(new Book('', '', ''));
   const navigate = useNavigate();
 
   const inputHandler = ({target})=>{
     console.log(target);
     setBook({...book, [target.name] : target.value});
+  }
+
+  const addBook = (book)=>{
+    setBooks([...books, book]);
   }
 
   return <div clasname="row">
@@ -27,7 +35,7 @@ function AddBook(props){
           <input type="text" className="form-control" id="auteur" name="auteur" value={book.auteur} onChange={inputHandler} />
         </div>
         <button type="button" className="btn btn-primary" onClick={()=>{
-          props.refAddBook(book);
+          addBook(book);
           navigate('/books');
         }
         }>Valider</button>
