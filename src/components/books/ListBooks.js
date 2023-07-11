@@ -27,7 +27,7 @@ function ListBook(props){
           <td>{book.titre}</td>
           <td>{book.auteur}</td>
           <td><Link className="btn btn-primary" to={`/books/update/${book.isbn}`} >Editer</Link></td>
-          <td><button className="btn btn-danger">Supprimer</button></td>
+          <td><button className="btn btn-danger" onClick={()=>{props.refDeleteBook(book.isbn)}}>Supprimer</button></td>
         </tr>)
       }
 

@@ -30,11 +30,16 @@ function App() {
     ));
   }
 
+  const deleteBook = (isbn)=>{
+    if(window.confirm('Êtes-vous sûre de vouloir supprimer le livre?'))
+      setBooks(books.filter(b=>b.isbn!==isbn));
+  }
+
   return (
     <div className="container">
       <BrowserRouter>
       <Routes>
-        <Route path="/books" exact element={<ListBook books={books} />} />
+        <Route path="/books" exact element={<ListBook books={books} refDeleteBook={deleteBook} />} />
         <Route path="/books/add" exact element={<AddBook refAddBook={addBook} />} />
         <Route path="/books/update/:isbn" exact element={<UpdateBook books={books} refEditBook={editBook} />} />
       </Routes>
