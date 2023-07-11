@@ -9,11 +9,7 @@ export const BookContext = createContext();
 
 function App() {
 
-  const [books, setBooks] = useState([
-    new Book('1234', 'L\'orange mécanique', 'Anthony Burgess'),
-    new Book('5678', 'La gloire de mon père', 'Marcel Pagnol'),
-    new Book('9876', 'Martine à la plage', 'Terry Amartin')
-  ])
+  const [books, setBooks] = useState([])
 
   return (
     <div className="container">

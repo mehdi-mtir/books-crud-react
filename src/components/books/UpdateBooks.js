@@ -12,16 +12,30 @@ function UpdateBook(props){
   const navigate = useNavigate();
 
   const editBook = (book)=>{
-    setBooks(books.map(
-      b=>{
-        if(b.isbn === book.isbn){
-          return book;
-        }
-        else{
-          return b;
-        }
+    console.log(book);
+    const requestOptions = {
+      method : 'PUT',
+      headers : {'content-type' : 'application/json'},
+      body : JSON.stringify(book)
+    }
+
+    fetch(`http://localhost:3000/books/${book.id}`, requestOptions).then(
+      () => {
+        setBooks(books.map(
+          b=>{
+            if(b.isbn === book.isbn){
+              return book;
+            }
+            else{
+              return b;
+            }
+          }
+        ));
+        navigate("/books");
       }
-    ));
+    )
+
+
   }
 
 
@@ -58,7 +72,6 @@ function UpdateBook(props){
         </div>
         <button type="button" className="btn btn-primary" onClick={()=>{
           editBook(book);
-          navigate('/books');
         }
         }>Valider</button>
       </form>

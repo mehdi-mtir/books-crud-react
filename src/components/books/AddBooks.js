@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Book from "../../model/Book";
 import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { BookContext } from '../../App';
 
 function AddBook(props){
@@ -16,7 +16,20 @@ function AddBook(props){
   }
 
   const addBook = (book)=>{
-    setBooks([...books, book]);
+    const requestOptions = {
+      method : 'POST',
+      headers : {'content-type' : 'application/json'},
+      body : JSON.stringify(book)
+    }
+
+    fetch("http://localhost:3000/books", requestOptions).then(
+      () => {
+        setBooks([...books, book]);
+        navigate("/books");
+      }
+    )
+
+
   }
 
   return <div clasname="row">
@@ -36,7 +49,6 @@ function AddBook(props){
         </div>
         <button type="button" className="btn btn-primary" onClick={()=>{
           addBook(book);
-          navigate('/books');
         }
         }>Valider</button>
       </form>
