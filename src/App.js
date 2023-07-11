@@ -1,23 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import ListBook from './components/books/ListBooks';
+import AddBook from './components/books/AddBooks';
+import UpdateBook from './components/books/UpdateBooks';
+import Book from './model/Book';
+import { useState } from "react";
+
 
 function App() {
+  const [books, setBooks] = useState([
+    new Book('1234', 'L\'orange mécanique', 'Anthony Burgess'),
+    new Book('5678', 'La gloire de mon père', 'Marcel Pagnol'),
+    new Book('9876', 'Martine à la plage', 'Terry Amartin')
+  ])
+
+  const addBook = (book)=>{
+    setBooks([...books, book]);
+  }
+
+  const editBook = (book)=>{
+    setBooks(books.map(
+      b=>{
+        if(b.isbn === book.isbn){
+          return book;
+        }
+        else{
+          return b;
+        }
+      }
+    ));
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <BrowserRouter>
+      <Routes>
+        <Route path="/books" exact element={<ListBook books={books} />} />
+        <Route path="/books/add" exact element={<AddBook refAddBook={addBook} />} />
+        <Route path="/books/update/:isbn" exact element={<UpdateBook books={books} refEditBook={editBook} />} />
+      </Routes>
+    </BrowserRouter>
     </div>
   );
 }
